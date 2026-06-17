@@ -14,13 +14,13 @@
         <h1 class="text-center my-3">Registration</h1>
         <form method="post" action="action/registret.php" enctype="multipart/form-data">
             <div class="mb-3 ">
-                <input type="text" class="form-control w-50 m-auto" name="name" placeholder="Enter your Name">
+                <input type="text" class="form-control w-50 m-auto" name="name" placeholder="Enter your Name" required>
             </div>
             <div class="mb-3 ">
-                <input type="text" class="form-control w-50 m-auto" name="mobile" maxlength="10" minlength="10" placeholder="Enter your Mobile number">
+                <input type="text" class="form-control w-50 m-auto" name="mobile" maxlength="10" minlength="10" required placeholder="Enter your Mobile number">
             </div>
             <div class="mb-3 ">
-                <input type="email" class="form-control w-50 m-auto" name="email" placeholder="Enter your Email">
+                <input type="email" class="form-control w-50 m-auto" name="email" placeholder="Enter your Email" required>
             </div>
             <div class="mb-3">
                 <input type="password" class="form-control w-50 m-auto" name="password"  placeholder="Enter your password">
