@@ -1,5 +1,4 @@
 <?php
-session_start();
 if (isset($_POST['submit'])) {
     include '../common/conn.php';
     $title = $_POST[''];
@@ -39,9 +38,9 @@ if (isset($_POST['submit'])) {
 </head>
 
 <body>
-    <div class="container">
+    <div class="container my-5">
         <h1 class="text-center">Add Product </h1>
-        <form class="mx-auto w-50" method="post" action="addproduct.php">
+        <form class="mx-auto w-75" method="post" action="addproduct.php">
             <div class="mb-3">
                 <label for="title" class="form-label">Product Name</label>
                 <input type="text" class="form-control" name="title">

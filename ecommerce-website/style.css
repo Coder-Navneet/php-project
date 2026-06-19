@@ -1,7 +1,10 @@
-*{
-    font-family: -apple-system, "Helvetica Neue", sans-serif, "Mier Book";
-  box-sizing: border-box;  
+* {
+  font-family: -apple-system, "Helvetica Neue", sans-serif, "Mier Book";
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-.logo{
-    width: 150px;
+
+.logo {
+  width: 150px;
 }

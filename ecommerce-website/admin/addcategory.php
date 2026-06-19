@@ -1,23 +1,27 @@
 <?php
-session_start();
-if (isset($_POST['submit'])) {
-    include '../common/conn.php';
-    $category = $_POST['category'];
+ if (isset($_POST['add_category'])) {
+                include '../common/conn.php';
+                $category = $_POST['category'];
 
-    $sql = "INSERT INTO category (category) VALUES ('$category')";
-    // $sql = "SELECT * FROM admin_users WHERE email = '$email' AND password = $password ";
+                $sql = "SELECT * FROM category  WHERE  category = '$category'";
+                $result = mysqli_query($conn, $sql);
+                $num = mysqli_num_rows($result);
+                if ($num > 0) {
+                    echo "<script>alert('Category alery available') ;</script>";
+                } else {
 
-    $result = mysqli_query($conn,$sql);
-    if ($result) {
-        
-        echo '<div class="alert alert-success" role="alert">
-  Category add successfully .
-</div>';
-    } else {
-        echo "Invalid credantiol";
-    }
-}
+                    $insert_sql = "INSERT INTO category (category) VALUES ('$category')";
+                    // $sql = "SELECT * FROM admin_users WHERE email = '$email' AND password = $password ";
 
+                    $result = mysqli_query($conn, $insert_sql);
+                    if ($result) {
+
+                        echo "<script>alert('Category add successfully.') ;</script>";
+                    } else {
+                        echo "Invalid credantiol";
+                    }
+                }
+            }
 ?>
 
 <!doctype html>
@@ -33,13 +37,13 @@ if (isset($_POST['submit'])) {
 <body>
     <div class="container my-5">
         <h1 class="text-center mb-3">Add Category</h1>
-        <form class="w-50 mx-auto" method="post" action="addcategory.php">
+        <form class="w-50 mx-auto" method="post" action="">
             <div class="mb-3">
                 <label for="category" class="form-label">category </label>
                 <input type="text" class="form-control" name="category">
             </div>
 
-            <button type="submit" class="btn btn-primary w-100" name="submit">submit</button>
+            <button type="submit" class="btn btn-primary w-100" name="add_category">Add Category</button>
         </form>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

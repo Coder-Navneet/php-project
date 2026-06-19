@@ -1,5 +1,4 @@
 <?php
-session_start();
 include '../common/conn.php';
 ?>
 <!doctype html>
@@ -14,7 +13,7 @@ include '../common/conn.php';
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-center display-4 fw-bold">Brand</h1>
+        <h1 class="text-center ">Brand</h1>
         <table class="table mt-5 ">
             <thead class="table-info">
                 <tr>
