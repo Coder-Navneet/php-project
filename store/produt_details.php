@@ -28,8 +28,8 @@ include './function/common_function.php';
                 <div class="collapse navbar-collapse " id="navbarSupportedContent">
                     <form class="d-flex mx-auto w-75 " role="search" method="get" action="search_product.php">
                         <input class="form-control  me-2" type="search" placeholder="Search" aria-label="Search" name="search_data" />
-                                <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
-                                 <input type="submit" class="btn btn-outline-success" name="search_data_product" value="search">
+                        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
+                        <input type="submit" class="btn btn-outline-success" name="search_data_product" value="search">
 
                     </form>
                     <ul class="navbar-nav mx-auto w-25  mb-lg-0 me-5 align-content-center">
@@ -95,19 +95,24 @@ include './function/common_function.php';
             </div>
             <!-- product section  -->
             <div class="col-md-10">
-                <div class="row">
+                <div class="row mx-auto">
                     <?php
-                    getproduct();
+                    product_details();
                     get_unique_category();
                     get_unique_brand();
                     ?>
-
+                    <div class="row mt-5">
+                        <h2 class="text-center mb-3">Related Product</h2>
+                        <?php
+                        getproduct();
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <?php include './common/footer.php' ;
+    <?php include './common/footer.php';
     ?>
     <!-- Bootstrap js link  -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>

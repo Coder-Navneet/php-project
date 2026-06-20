@@ -3,6 +3,7 @@ include '../common/conn.php';
 if (isset($_POST['insert_product'])) {
     // $product_id = $_POST['product_id'];
     $product_title = $_POST['product_title'];
+    $product_keyword = $_POST['product_keyword'];
     $product_discription = $_POST['product_discription'];
     $category = $_POST['category'];
     $brand = $_POST['brand'];
@@ -34,7 +35,7 @@ if (isset($_POST['insert_product'])) {
         // inset query 
 
 
-        $product = "INSERT INTO product (product_id,product_title,product_discription,category_id,brand_id,product_image1,product_image2,product_image3,product_price,date,status) VALUES ('$product_title','$product_discription','$category','$brand','$product_image1','$product_image2','$product_image3','$product_price', NOW(),'$status')";
+        $product = "INSERT INTO product (product_id,product_title,product_keyword,product_discription,category_id,brand_id,product_image1,product_image2,product_image3,product_price,date,status) VALUES ('','$product_title','$product_keyword','$product_discription','$category','$brand','$product_image1','$product_image2','$product_image3','$product_price', NOW(),'$status')";
 
         // echo "$product_title <br/>";
         // echo "$product_discription <br/>";
@@ -78,6 +79,10 @@ if (isset($_POST['insert_product'])) {
             <div class="mb-3">
                 <label for="product_title" class="form-label">Product Title</label>
                 <input type="text" class="form-control" name="product_title" placeholder="Enter Product Title">
+            </div>
+            <div class="mb-3">
+                <label for="product_keyword" class="form-label">Product Keyword</label>
+                <input type="text" class="form-control" name="product_keyword" placeholder="Enter Product keyword">
             </div>
             <div class="mb-3">
                 <label for="product_discription" class="form-label">Product discription</label>
