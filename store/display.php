@@ -18,51 +18,9 @@ include './function/common_function.php';
 </head>
 
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-white border-bottom">
-            <div class="container-fluid ">
-                <a class="navbar-brand" href="./"><img src="images/logo.png" alt="" class=" logo"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse " id="navbarSupportedContent">
-                    <form class="d-flex mx-auto w-75 " role="search" method="get" action="search_product.php">
-                        <input class="form-control  me-2" type="search" placeholder="Search" aria-label="Search" name="search_data" />
-                        <!-- <button class="btn btn-outline-success" type="submit">Search</button> -->
-                        <input type="submit" class="btn btn-outline-success" name="search_data_product" value="search">
-
-                    </form>
-                    <ul class="navbar-nav mx-auto w-25  mb-lg-0 me-5 align-content-center">
-                        <li class="nav-item me-3 my-auto">
-                            <a class="nav-link " href="display.php">product</a>
-                        </li>
-                        <li class="nav-item me-3 my-auto">
-                            <a class="nav-link " href="#"><i class="fa-solid fa-cart-arrow-down"></i><br>cart</a>
-                        </li>
-                        <li class="nav-item mx-auto my-auto">
-                            <a class="nav-link" href="#"> <i class="fa-regular fa-user"> </i>
-                                <br>profile
-                            </a>
-                        </li>
-
-                        <!-- <?php
-                                // if ($email && $password ) {
-                                //     echo '<li class="nav-item mx-auto my-auto">
-                                //     <a class="btn btn-danger" href="logout.php"> logout</a>
-                                // </li> ';
-                                // } else {
-                                //     echo '<li class="nav-item mx-auto my-auto">
-                                //     <a class="btn btn-primary" href="login.php"> login</a>
-                                // </li> ';
-                                // }
-                                ?> -->
-                    </ul>
-
-                </div>
-            </div>
-        </nav>
-    </header>
-
+ <?php include './common/header.php' ?>
+    <!-- calling add to cart function  -->
+  <<?php  cart(); ?>
     <div class="main container-fluid bg-light py-5 ">
         <div class="row mx-5">
             <!-- side menu -->

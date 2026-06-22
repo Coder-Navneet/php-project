@@ -1,5 +1,5 @@
 <?php
-include './common/conn.php';
+// include './common/conn.php';
 
 // get product display 
 function getproduct()
@@ -28,13 +28,14 @@ function getproduct()
                 echo ' <div class="col-3 py-2">
 
 
-                        <div class="card" style="width: 18rem; height:30rem">
+                        <div class="card" style="width: 18rem; ">
                             <img src="admin/product_images/' . $row['product_image1'] . '" class="card-img-top " alt="..." style="height: 291px;">
                             <div class="card-body">
-                                <h5 class="card-title">' . $product_keyword . '</h5>
-                                <p class="card-text">' . $product_title . '</p>
+                                <h5 class="card-title">' . $product_title . '</h5>
+                                <p class="card-text">' . mb_substr($product_discription, 0, 50) . '</p>
+                                <p class="card-text">price : ' . $product_price . ' Rs</p>
 
-                                <a href="#" class="btn btn-success">Add to cart</a>
+                                <a href="index.php?add_to_cart=' . $product_id . '" class="btn btn-success">Add to cart</a>
                                 <a href="produt_details.php?product_id=' . $product_id . '" class="btn btn-primary">view more</a>
                             </div>
                         </div>
@@ -79,7 +80,7 @@ function get_unique_category()
                             <div class="card-body">
                               <h5 class="card-title">' . $product_keyword . '</h5>
                                 <p class="card-text">' . $product_title . '</p>
-                                <a href="#" class="btn btn-success">Add to cart</a>
+                                <a href="index.php?add_to_cart=' . $product_id . '" class="btn btn-success">Add to cart</a>
                                 <a href="produt_details.php?product_id=' . $product_id . '" class="btn btn-primary">view more</a>
                             </div>
                         </div>
@@ -124,7 +125,7 @@ function get_unique_brand()
                                <h5 class="card-title">' . $product_keyword . '</h5>
                                 <p class="card-text">' . $product_title . '</p>
 
-                                <a href="#" class="btn btn-success">Add to cart</a>
+                                <a href="index.php?add_to_cart=' . $product_id . '" class="btn btn-success">Add to cart</a>
                                 <a href="produt_details.php?product_id=' . $product_id . '" class="btn btn-primary">view more</a>
                             </div>
                         </div>
@@ -312,10 +313,100 @@ function product_details()
                             <h5 class="card-title">' . $product_title . '</h5>
                             <h5 class="py-3">price -' . $product_price . 'Rs</h5>
                             <p class="card-text">' . $product_discription . '</p>
-                           <a href="#" class="btn btn-success">Add to cart</a>
+                           <a href="index.php?add_to_cart=' . $product_id . '" class="btn btn-success">Add to cart</a>
                            <a href="produt_details.php?product_id=' . $product_id . '" class="btn btn-primary">buy now</a>
                         </div>
                     </div>';
         }
     }
 }
+
+function getUserIpAddr()
+{
+
+    if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    } else {
+        $ip = $_SERVER['REMOTE_ADDR'];
+    }
+    return $ip;
+}
+// echo " user ip address  $ip";
+
+// cart function 
+
+function cart()
+{
+    if (isset($_GET['add_to_cart'])) {
+        global $conn;
+        $ip = getUserIpAddr();
+
+        $product_id = $_GET['add_to_cart'];
+
+        $select_query = "SELECT * FROM cart_details WHERE product_id = '$product_id' and ip_address = '$ip' ";
+        $result_query = mysqli_query($conn, $select_query);
+        $num_of_rows = mysqli_num_rows($result_query);
+
+        if ($num_of_rows > 0) {
+            echo "<script> alert('this item alreay presant inside  cart'); </script>";
+            echo "<script>window.open('index.php','_self');</script>";
+        } else {
+
+            $insert_query = "INSERT INTO cart_details (product_id,ip_address,quantity) VALUES ('$product_id', '$ip',0)";
+            $result = mysqli_query($conn, $insert_query);
+            if ($result) {
+
+                echo "<script> alert( 'item add to cart ' ); </script>";
+                echo "<script>window.open('index.php','_self');</script>";
+            }
+        }
+    };
+}
+
+// function  to get cart item number 
+function cart_item()
+{
+    if (isset($_GET['add_to_cart'])) {
+        global $conn;
+        $ip = getUserIpAddr();
+
+        $product_id = $_GET['add_to_cart'];
+
+        $select_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
+        $result_query = mysqli_query($conn, $select_query);
+        $count_cart_item = mysqli_num_rows($result_query);
+    } else {
+        global $conn;
+        $ip = getUserIpAddr();
+        $select_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
+        $result_query = mysqli_query($conn, $select_query);
+        $count_cart_item = mysqli_num_rows($result_query);
+    }
+    echo "$count_cart_item";
+}
+
+// total price function 
+
+function total_cart_price()
+{
+    // if (isset($_GET['add_to_cart'])) {
+    global $conn;
+    $ip = getUserIpAddr();
+    $total_price = 0 ;
+    $cart_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
+    $result = mysqli_query($conn, $cart_query);
+    while ($row = mysqli_fetch_array($result)) {
+        $product_id = $row['product_id'];
+        $select_query = "SELECT * FROM product WHERE product_id = '$product_id'";
+        $result_query = mysqli_query($conn, $select_query);
+        while ($row_product_price = mysqli_fetch_array($result_query)) {
+            $product_price = array($row_product_price['product_price']);
+            $product_value = array_sum($product_price);
+            $total_price +=$product_value;
+            }
+            }
+            echo $total_price;
+}
+

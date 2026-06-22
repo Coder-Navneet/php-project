@@ -20,54 +20,21 @@ include './function/common_function.php';
 <body>
      <?php include './common/header.php' ?>
 
-    <!-- calling add to cart function  -->
-  <<?php  cart(); ?>
-
-
-    <div class="main container-fluid bg-light py-5 ">
-        <div class="row mx-5">
-            <!-- side menu -->
-            <div class="col-2 border-end border-bottom">
-
-                <!-- side menu -->
-                <div class=" row  ">
-                    <div class="col ">
-                        <h3>Brand</h3>
-                        <ul class="list-group text-center">
-                            <?php
-
-                            getbrand();
-                            ?>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h3>category</h3>
-                        <ul class="list-group  text-center">
-                            <?php
-
-                            getcategory();
-                            ?>
-
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!-- product section  -->
-            <div class="col-md-10">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="row">
                     <?php
-                    getproduct();
-                    get_unique_category();
-                    get_unique_brand();
-                    getUserIpAddr();
-                                   ?>
-
+                    if (!isset($_SESSION['username'])) {
+                        include 'user/user_login.php' ;
+                    }else{
+                        include 'payment.php';
+                    }
+                    ?>
                 </div>
             </div>
+           
         </div>
-    </div>
+
 
     <?php include './common/footer.php';
     ?>
