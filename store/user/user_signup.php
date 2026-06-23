@@ -7,30 +7,55 @@ if (isset($_POST['signup'])) {
     $mobile = $_POST['mobile'];
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $hash_password = password_hash($password, PASSWORD_DEFAULT);
     $cpassword = $_POST['cpassword'];
     $user_image = $_FILES['user_image']['name'];
     $tmp_image = $_FILES['user_image']['tmp_name'];
-    $user_ip =  getUserIpAddr() ;
-    
-    if($password === $cpassword){
-  $sql = "INSERT INTO user_table (username,user_address,user_mobile,user_email,user_password,user_image,user_ip) VALUES ('$name','$address','$mobile','$email','$password','$user_image','$user_ip')";
-    $result = mysqli_query($conn,$sql);
-    if ($result) {
-        echo '<div class="alert alert-success" role="alert">
-  sign up successfully .
-</div>';
-header('location:user_login.php');
-    }else{
-        die(mysqli_error($conn));
-    }
+    $user_ip =  getUserIpAddr();
 
-    }else{
-         echo '<div class="alert alert-danger" role="alert">
+    $select_query = "SELECT * FROM user_table WHERE username='$name' or user_mobile='$mobile' or user_email='$email' ";
+    $select_result = mysqli_query($conn, $select_query);
+
+    $num = mysqli_num_rows($select_result);
+    if ($num > 0) {
+        echo "<script>alert('user alreay registered !') </script>";
+    } else {
+
+
+
+        if ($password === $cpassword) {
+            move_uploaded_file($tmp_image, "./user_images/$user_image");
+            $sql = "INSERT INTO user_table (username,user_address,user_mobile,user_email,user_password,user_image,user_ip) VALUES ('$name','$address','$mobile','$email','$hash_password','$user_image','$user_ip')";
+            $result = mysqli_query($conn, $sql);
+
+            // cart item 
+
+            $sql = "SELECT * FROM cart_details WHERE ip_address = '$user_ip'";
+            $result_sql = mysqli_query($conn, $sql);
+            $num_cart = mysqli_num_rows($result_sql);
+
+            if ($result) {
+                if ($num_cart > 0) {
+                    echo "<script>alert(' sign up successfully ');</script>";
+                    echo "<script>window.open('checkout.php','_self');</script>";
+                } else {
+                    echo "<script>alert(' sign up successfully ');</script>";
+                    echo "<script>window.open('user_login.php','_self');</script>";
+                }
+            } else {
+                die(mysqli_error($conn));
+            }
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
             Invalid Credanstiol!
          </div>';
-        
+        }
     }
 }
+
+
+
+
 
 ?>
 
@@ -40,7 +65,7 @@ header('location:user_login.php');
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title>Sign In page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
@@ -74,11 +99,11 @@ header('location:user_login.php');
             </div>
             <div class="mb-3">
                 <label for="user_image" class="form-label">User Image</label>
-                <input type="file" class="form-control" name="user_image" >
+                <input type="file" class="form-control" name="user_image">
             </div>
             <button type="submit" class="btn btn-primary w-100" name="signup">Submit</button>
         </form>
-        <p class="text-center my-5">you have already account <a href="login.php">Log in</a></p>
+        <p class="text-center my-5">you have already account <a href="user_login.php">Log in</a></p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>

@@ -20,7 +20,7 @@ include './function/common_function.php';
 <body>
     <?php include './common/header.php' ?>
    <!-- calling add to cart function  -->
-  <<?php  cart(); ?>
+  <?php  cart(); ?>
 
     <div class="main container-fluid bg-light py-5 ">
         <div class="row mx-5">

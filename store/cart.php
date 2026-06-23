@@ -153,7 +153,7 @@ include './function/common_function.php'; ?>
         <div class="d-flex p-3">
             <h4 class="me-4">subtotal - <strong> <?php echo $total_price;  ?> /-</strong></h4>
             <button class=" btn btn-primary me-4"><a href="index.php" class="text-light text-decoration-none">coutinue shopping</a></button>
-            <button class=" btn btn-dark me-4"><a href="checkout.php" class="text-light text-decoration-none">coutinue shopping</a></button>
+            <button class=" btn btn-dark me-4"><a href="checkout.php" class="text-light text-decoration-none">Checkout</a></button>
         </div>
     </form>
     </div>
