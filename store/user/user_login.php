@@ -1,6 +1,8 @@
 <?php
-include '../function/common_function.php';
+
+
 if (isset($_POST['login'])) {
+    include '../function/common_function.php';
     include '../common/conn.php';
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -21,24 +23,24 @@ if (isset($_POST['login'])) {
 
 
         if ($num > 0) {
-            if (password_verify($password, $row['user_password'])) {
+            // if (password_verify($password, $row['user_password'])) {
 
-                if ($num_cart == 1 && $row_cart['product_id'] == 0) {
-                    session_start();
-                    $_SESSION['username'] = $username;
-                    $_SESSION['user_image'] = $row['user_image'];
-                    echo "<script>alert('login successfully')</script>";
-                    echo "<script>window.open('cart.php','_self')</script>";
-                } else {
+                if ($num == 1 && $row_cart == 0) {
                     session_start();
                     $_SESSION['username'] = $username;
                     $_SESSION['user_image'] = $row['user_image'];
                     echo "<script>alert('login successfully')</script>";
                     echo "<script>window.open('profile.php','_self')</script>";
+                    } else {
+                        session_start();
+                        $_SESSION['username'] = $username;
+                        $_SESSION['user_image'] = $row['user_image'];
+                        echo "<script>alert('login successfully')</script>";
+                        echo "<script>window.open('../cart.php','_self')</script>";
                 }
-            } else {
-                echo "<script>alert('password does not match');</script>";
-            }
+            // } else {
+            //     echo "<script>alert('password does not match');</script>";
+            // }
         } else {
             echo "<script>alert('Invalid credantiol');</script>";
         }

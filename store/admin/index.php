@@ -1,3 +1,83 @@
+<?php
+   
+
+// login section php code 
+if (isset($_POST['login'])) {
+     include '../function\common_function.php';
+    include '../common/conn.php';
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT * FROM admin_users WHERE username = '$username'";
+    $result = mysqli_query($conn, $sql);
+    if ($result) {
+        $num = mysqli_num_rows($result);
+        $row = mysqli_fetch_assoc($result);
+        $ip = getUserIpAddr();
+
+        if ($num > 0) {
+            if (password_verify($password, $row['user_password'])) {
+
+                session_start();
+                $_SESSION['username'] = $username;
+                $_SESSION['user_image'] = $row['user_image'];
+                echo "<script>alert('login successfully')</script>";
+                echo "<script>window.open('dashboard.php','_self')</script>";
+            } else {
+                echo "<script>alert('password does not match');</script>";
+            }
+        } else {
+            echo "<script>alert('Invalid credantiol');</script>";
+        }
+    } else {
+        echo "<script>alert('user not found');</script>";
+    }
+}
+
+// signup section php code 
+
+if (isset($_POST['signup'])) {
+     include '../function\common_function.php';
+    include '../common/conn.php';
+
+    $name = $_POST['name'];
+    $address = $_POST['address'];
+    $mobile = $_POST['mobile'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $hash_password = password_hash($password, PASSWORD_DEFAULT);
+    $cpassword = $_POST['cpassword'];
+    $user_image = $_FILES['user_image']['name'];
+    $tmp_image = $_FILES['user_image']['tmp_name'];
+    $user_ip =  getUserIpAddr();
+
+    $select_query = "SELECT * FROM admin_users WHERE  user_mobile='$mobile' or user_email='$email' ";
+    $select_result = mysqli_query($conn, $select_query);
+
+    $num = mysqli_num_rows($select_result);
+    if ($num > 0) {
+        echo "<script>alert('user alreay registered !') </script>";
+    } else {
+
+
+
+        if ($password === $cpassword) {
+            move_uploaded_file($tmp_image, "user_images/$user_image");
+            $sql = "INSERT INTO admin_users (username,user_address,user_mobile,user_email,user_password,user_image,user_ip) VALUES ('$name','$address','$mobile','$email','$hash_password','$user_image','$user_ip')";
+            $result = mysqli_query($conn, $sql);
+
+            if ($result) {
+                    echo "<script>alert(' sign up successfully ');</script>";           
+            } else {
+                die(mysqli_error($conn));
+            }
+        } else {
+            echo '<div class="alert alert-danger" role="alert">
+            Invalid Credanstiol!
+         </div>';
+        }
+    }}
+?>
 
 <!doctype html>
 <html lang="en">
@@ -5,114 +85,86 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Dashboard</title>
+    <title>Bootstrap demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
-    <!-- header start  -->
-    <header>
-        <nav class="navbar navbar-expand-lg bg-info border-bottom">
-            <div class="container-fluid ">
-                <a class="navbar-brand" href="#"><img src="../images/logo.png" alt="" class=" logo"></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                    <ul class="navbar-nav ms-auto  me-5 mb-lg-0 align-content-center">
-
-                        <li class="nav-item  my-auto"></li>
-                    </ul>
-
-                </div>
-            </div>
-        </nav>
-    </header>
-    <!-- title  -->
-    <div>
-        <h1 class="text-center my-3 display-4 fw-bold">Manage Details</h1>
-
+    <div class="text-center my-5">
+        <p>please login or sign up with use this link </p>
+        <button class="btn btn-primary me-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_login" aria-expanded="false" aria-controls="collapse_login">
+            <h3>Login</h3>
+        </button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_signup" aria-expanded="false" aria-controls="collapse_signup">
+            <h3>sign up</h3>
+        </button>
     </div>
 
-    <!-- all buttons  -->
-    <div class="container-fulid bg-dark py-3 my-5">
-        <div class="row  mx-auto">
-            <div class="col-12 text-center">
-                <button class="btn btn-info text-center my-3 me-3"> <a class="nav-link text-light " href="insert_product.php">insert Product</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="index.php?view_product">view product</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="index.php?insert_category">insert catagory</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="index.php?view_category">view catagory</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="index.php?insert_brand">insert brand</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="index.php?view_brand">view brand</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">All order</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">Add Payments</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">list users</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">logout</a></button>
-            </div>
-        </div>
-    </div>  
-    
-    <div class="container ">
-        <?php
-            if(isset($_GET['insert_category'])){
-                include 'insert_category.php';
-            }
-        ?>
-    </div>
-    <div class="container ">
-        <?php
-            if(isset($_GET['insert_brand'])){
-                include 'insert_brand.php';
-            }
-        ?>
-    </div>
-    <footer class="container-fulid bg-white pt-3  bottom-0 mt-5">
-        <div class="container mt-5 border-bottom border-dark">
+    <!-- login section collapse  -->
+    <div class="collapse" id="collapse_login">
+        <div class="card card-body">
 
-            <div class="row ">
-
-                <div class="col-3">
-                    <a class="" href="#"><img src="images/logo.png" alt="" class="logo "></a>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa, quibusdam.</p>
-                </div>
-                <div class="col-3 ">
-                    <ul class="list-unstyled">
-                        <li>
-                            <h3 class="text-black">link</h3>
-                        </li>
-                        <li class="">product</li>
-                        <li>about</li>
-                        <li></li>
-                    </ul>
-                </div>
-                <div class="col-3 ">
-                    <ul class="list-unstyled">
-                        <li>
-                            <h3 class="text-black">Category</h3>
-                        </li>
-                        <li class="">T-shirt</li>
-                        <li>Jeans</li>
-                        <li>Shoes</li>
-                    </ul>
-                </div>
-                <div class="col-3">
-                    <ul class="list-unstyled">
-                        <li>
-                            <h3 class="text-black">contact us</h3>
-                        </li>
-                        <li>address: <a href="">dewas (M.P)</a></li>
-                        <li>mobile no.: <a href="">1234567890</a></li>
-                        <li>email: <a href="">info@gmail.com</a></li>
-                    </ul>
-                </div>
+            <div class="container my-5">
+                <h1 class="text-center ">Log in </h1>
+                <form class="w-50 mx-auto" method="post" action="">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">User Name </label>
+                        <input type="text" class="form-control" name="username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" name="login">log in</button>
+                </form>
+                <p class="text-center my-5">you have not account <a href="user_signup.php">sign up</a></p>
             </div>
+
         </div>
-        <div class="text-center ">
-            <p class="mt-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit, autem?</p>
+    </div>
+
+    <!-- sign up section collapse  -->
+    <div class="collapse" id="collapse_signup">
+        <div class="card card-body">
+
+            <div class="container my-3">
+                <h1 class="text-center ">Sign up</h1>
+                <form class="w-50 mx-auto" method="post" action="" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter Your Name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label">Address</label>
+                        <input type="text" class="form-control" name="address" placeholder="Enter Your Address">
+                    </div>
+                    <div class="mb-3">
+                        <label for="mobile" class="form-label">Mobile No.</label>
+                        <input type="text" class="form-control" name="mobile" placeholder="Enter Your Mobile Number">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email </label>
+                        <input type="email" class="form-control" name="email" placeholder="Enter Your Email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" name="password" placeholder="Enter Your Password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cpassword" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" name="cpassword" placeholder="Enter Your Confirm Password">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user_image" class="form-label">User Image</label>
+                        <input type="file" class="form-control" name="user_image">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" name="signup">Submit</button>
+                </form>
+                <p class="text-center my-5">you have already account <a href="user_login.php">Log in</a></p>
+            </div>
+
         </div>
-    </footer>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 

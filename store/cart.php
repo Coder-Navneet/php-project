@@ -1,8 +1,8 @@
 <?php
-
+session_start();
 use Dom\Element;
 
- include './common/conn.php';
+include './common/conn.php';
 include './function/common_function.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -39,23 +39,26 @@ include './function/common_function.php'; ?>
                         <li class="nav-item me-3 my-auto">
                             <a class="nav-link " href="#">price <?php total_cart_price(); ?> </a>
                         </li>
-                        <li class="nav-item mx-auto my-auto">
-                            <a class="nav-link" href="#"> <i class="fa-regular fa-user"> </i>
-                                <br>profile
-                            </a>
-                        </li>
-
-                        <!-- <?php
-                                // if ($email && $password ) {
-                                //     echo '<li class="nav-item mx-auto my-auto">
-                                //     <a class="btn btn-danger" href="logout.php"> logout</a>
-                                // </li> ';
-                                // } else {
-                                //     echo '<li class="nav-item mx-auto my-auto">
-                                //     <a class="btn btn-primary" href="login.php"> login</a>
-                                // </li> ';
-                                // }
-                                ?> -->
+                     
+                        <?php
+                        if (isset($_SESSION['username'])) {
+                            echo '<li class="nav-item me-auto my-auto">
+                                    <a class="btn btn-danger" href="./user_logout.php"> logout</a>
+                                </li> ';
+                            echo ' <li class="nav-item d-flex mx-5 my-auto ">
+                            <img src="./user/user_images/' . $_SESSION['user_image'] . '"  class="" style="width:30px;"> 
+                            <h2 class="ms-2 text-dark text-decoration-underline">' . $_SESSION['username'] . '</h2>
+                            
+                        </li>';
+                        } else {
+                            echo '  <li class="nav-item me-3 my-auto">
+                        <a class="nav-link " href="user\user_signup.php">registraion</a>
+                    </li>';
+                            echo '<li class="nav-item mx-auto my-auto">
+                                    <a class="btn btn-primary" href="user/user_login.php"> login</a>
+                                </li> ';
+                        }
+                        ?>
                     </ul>
 
                 </div>
@@ -68,18 +71,18 @@ include './function/common_function.php'; ?>
         <form action="" method="post">
 
             <table class="table table-bordered text-center">
-             
-                    <!-- php code to  dispay dynamic data  -->
-                    <?php
+
+                <!-- php code to  dispay dynamic data  -->
+                <?php
                 // if (isset($_GET['add_to_cart'])) {
-                    global $conn;
-                    $ip = getUserIpAddr();
-                    $total_price = 0;
-                    $cart_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
-                    $result = mysqli_query($conn, $cart_query);
-                    $num = mysqli_num_rows($result);
-                    if ($num > 0) {
-                        
+                global $conn;
+                $ip = getUserIpAddr();
+                $total_price = 0;
+                $cart_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
+                $result = mysqli_query($conn, $cart_query);
+                $num = mysqli_num_rows($result);
+                if ($num > 0) {
+
                     echo '
                        <thead>
                     
@@ -96,20 +99,20 @@ include './function/common_function.php'; ?>
 
                     while ($row = mysqli_fetch_array($result)) {
                         $product_id = $row['product_id'];
-                    $select_query = "SELECT * FROM product WHERE product_id = '$product_id'";
-                    $result_query = mysqli_query($conn, $select_query);
-                    while ($row_product_price = mysqli_fetch_array($result_query)) {
-                        $product_price = array($row_product_price['product_price']);
-                        $price_table = $row_product_price['product_price'];
-                        $product_title = $row_product_price['product_title'];
-                        $product_image1 = $row_product_price['product_image1'];
-                        
-                        $product_value = array_sum($product_price);
-                        $total_price += $product_value;
+                        $select_query = "SELECT * FROM product WHERE product_id = '$product_id'";
+                        $result_query = mysqli_query($conn, $select_query);
+                        while ($row_product_price = mysqli_fetch_array($result_query)) {
+                            $product_price = array($row_product_price['product_price']);
+                            $price_table = $row_product_price['product_price'];
+                            $product_title = $row_product_price['product_title'];
+                            $product_image1 = $row_product_price['product_image1'];
 
-                
-                        
-                        echo    "<tr>
+                            $product_value = array_sum($product_price);
+                            $total_price += $product_value;
+
+
+
+                            echo    "<tr>
                         <td>$product_title</td>
                         <td><img src='./admin/product_images/$product_image1' alt='' style='width: 80px;  '></td>
                         <td><input type='text' name='qty' class=' w-25'></td>
@@ -123,69 +126,65 @@ include './function/common_function.php'; ?>
 
                         
                         </td>
-                        </tr>" ; 
-
-                       
-                        
+                        </tr>";
                         }
-                        }
-                         if (isset($_POST['updatecart'])) {
-                            $quantity = $_POST['qty'];
-                            $upadate_cart = "UPDATE cart_details SET  quantity='$quantity' WHERE ip_address = '$ip'";
-                            $result_product = mysqli_query($conn,$upadate_cart);
-                            $total_price=$total_price*$quantity;
-                        }
-                    }else{
-                        echo "<h2 class='text-center text-danger'>Cart empty<h2>";
                     }
-                        ?>
-                    
-            </tbody>
-        </table>
-        <!-- subtotal  -->
-         <?php
-             global $conn;
-                    $ip = getUserIpAddr();
-                    $cart_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
-                    $result = mysqli_query($conn, $cart_query);
-                    $num = mysqli_num_rows($result);
-                    if ($num > 0) { ?>
-        <div class="d-flex p-3">
-            <h4 class="me-4">subtotal - <strong> <?php echo $total_price;  ?> /-</strong></h4>
-            <button class=" btn btn-primary me-4"><a href="index.php" class="text-light text-decoration-none">coutinue shopping</a></button>
-            <button class=" btn btn-dark me-4"><a href="checkout.php" class="text-light text-decoration-none">Checkout</a></button>
-        </div>
-    </form>
+                    if (isset($_POST['updatecart'])) {
+                        $quantity = $_POST['qty'];
+                        $upadate_cart = "UPDATE cart_details SET  quantity='$quantity' WHERE ip_address = '$ip'";
+                        $result_product = mysqli_query($conn, $upadate_cart);
+                        $total_price = $total_price * $quantity;
+                    }
+                } else {
+                    echo "<h2 class='text-center text-danger'>Cart empty<h2>";
+                }
+                ?>
+
+                </tbody>
+            </table>
+            <!-- subtotal  -->
+            <?php
+            global $conn;
+            $ip = getUserIpAddr();
+            $cart_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
+            $result = mysqli_query($conn, $cart_query);
+            $num = mysqli_num_rows($result);
+            if ($num > 0) { ?>
+                <div class="d-flex p-3">
+                    <h4 class="me-4">subtotal - <strong> <?php echo $total_price;  ?> /-</strong></h4>
+                    <button class=" btn btn-primary me-4"><a href="index.php" class="text-light text-decoration-none">coutinue shopping</a></button>
+                    <button class=" btn btn-dark me-4"><a href="user/checkout.php" class="text-light text-decoration-none">Checkout</a></button>
+                </div>
+        </form>
     </div>
     <!-- function to remove item  -->
-<?php }
-else{
-    echo " <button class='btn btn-primary mx-4'><a href='index.php' class='text-light text-decoration-none'>coutinue shopping</a></button>
-"; 
-
-}
+<?php } else {
+                echo " <button class='btn btn-primary mx-4'><a href='index.php' class='text-light text-decoration-none'>coutinue shopping</a></button>
+";
+            }
 ?>
 <?php
-    function remove_cart_item(){
-        global $conn;
-        if(isset($_POST['remove_cart'])){
-            foreach($_POST['removeitem'] as $remove_id){
-                echo $remove_id;
-                $delet_query = "DELETE FROM cart_details WHERE product_id = $remove_id";
-                $run_delete = mysqli_query($conn,$delet_query);
-                if ($run_delete) {
-                    echo "<script>window('cart.php','_self');</script>";
-                }
+function remove_cart_item()
+{
+    global $conn;
+    if (isset($_POST['remove_cart'])) {
+        foreach ($_POST['removeitem'] as $remove_id) {
+            echo $remove_id;
+            $delet_query = "DELETE FROM cart_details WHERE product_id = $remove_id";
+            $run_delete = mysqli_query($conn, $delet_query);
+            if ($run_delete) {
+                echo "<script>window('cart.php','_self');</script>";
             }
         }
     }
-     $remove_item = remove_cart_item();
-     echo $remove_item ;
+}
+$remove_item = remove_cart_item();
+echo $remove_item;
 ?>
 
-    
-    <?php include './common/footer.php' ?>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<?php include './common/footer.php' ?>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 
 </html>
