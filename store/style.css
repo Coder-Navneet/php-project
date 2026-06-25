@@ -6,3 +6,6 @@
 .logo{
     width: 150px;
 }
+body{
+    overflow-x: hidden;
+}

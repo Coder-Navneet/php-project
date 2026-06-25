@@ -394,7 +394,7 @@ function total_cart_price()
     // if (isset($_GET['add_to_cart'])) {
     global $conn;
     $ip = getUserIpAddr();
-    $total_price = 0 ;
+    $total_price = 0;
     $cart_query = "SELECT * FROM cart_details WHERE ip_address = '$ip' ";
     $result = mysqli_query($conn, $cart_query);
     while ($row = mysqli_fetch_array($result)) {
@@ -404,9 +404,39 @@ function total_cart_price()
         while ($row_product_price = mysqli_fetch_array($result_query)) {
             $product_price = array($row_product_price['product_price']);
             $product_value = array_sum($product_price);
-            $total_price +=$product_value;
-            }
-            }
-            echo $total_price;
+            $total_price += $product_value;
+        }
+    }
+    echo $total_price;
 }
+
+// get user order details
+function get_user_order_details()
+{
+    global $conn;
+    $username =  $_SESSION['username'];
+    $get_details = "SELECT * FROM user_table WHERE username = '$username' ";
+    $result_get_details = mysqli_query($conn, $get_details);
+    while ($row_query = mysqli_fetch_array($result_get_details)) {
+        $user_id = $row_query['user_id'];
+        if (!isset($_GET['edit_account'])) {
+            if (!isset($_GET['my_order'])) {
+                if (!isset($_GET['delete_account'])) {
+                    $get_order = "SELECT * FROM user_orders WHERE user_id = $user_id and order_status ='pending'";
+                    $result_get_order = mysqli_query($conn, $get_order);
+                    $row_count = mysqli_num_rows($result_get_order);
+                    if ($row_count > 0) {
+                        echo "<h1 class='text-success'>You have <span>$row_count</span> Pending order</h1>";
+                        echo "<a href='profile.php?my_orders' class='text-dark'>Order Details</a>";
+                    } else {
+                        echo "<h1 class='text-success'>You have zero Pending order</h1>";
+                        echo "<a href='../display.php' class='text-dark'>Explore product</a>";
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 

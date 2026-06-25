@@ -19,6 +19,9 @@ session_start();
                     <li class="nav-item me-3 my-auto">
                         <a class="nav-link " href="display.php">product</a>
                     </li>
+                    <li class="nav-item me-3 my-auto">
+                        <a class="nav-link " href="user/profile.php">profile</a>
+                    </li>
 
                     <li class="nav-item me-3 my-auto">
                         <a class="nav-link " href="cart.php "><i class="fa-solid fa-cart-arrow-down"></i><sup><span class="badge text-bg-secondary"><?php cart_item(); ?></span> </sup> </a>
