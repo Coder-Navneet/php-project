@@ -1,12 +1,11 @@
 <?php
-
-global $conn;
+include '../common/conn.php';
 $username =  $_SESSION['username'];
 $get_details = "SELECT * FROM user_table WHERE username = '$username' ";
 $result_get_details = mysqli_query($conn, $get_details);
 while ($row_query = mysqli_fetch_array($result_get_details)) {
     $user_id = $row_query['user_id'];
-    $get_order = "SELECT * FROM user_orders WHERE user_id = $user_id and order_status ='pending'";
+    $get_order = "SELECT * FROM user_orders WHERE user_id = $user_id ";
     $result_get_order = mysqli_query($conn, $get_order);
     $row_count = mysqli_num_rows($result_get_order);
 }
@@ -40,7 +39,7 @@ while ($row_query = mysqli_fetch_array($result_get_details)) {
             </thead>
             <tbody class="table-info">
 
-                <?php
+                <?php 
                 if ($row_count > 0) {
                     $num = 1;
                     while ($row_data =  mysqli_fetch_array($result_get_order)) {
@@ -54,7 +53,6 @@ while ($row_query = mysqli_fetch_array($result_get_details)) {
                             $order_status = 'Incomplete';
                             }else{
                             $order_status = 'Complete';
-
                         }
 
                         echo '
@@ -64,10 +62,18 @@ while ($row_query = mysqli_fetch_array($result_get_details)) {
                                     <td scope="row">' . $total_product . '</td>
                                     <td scope="row">' . $invoice_number . '</td>
                                     <td scope="row">' . $order_date . '</td>
-                                    <td scope="row">' . $order_status . '</td>
-                                    <td scope="row"><a href="confirm_payment.php">confirm</a></td>
-                                    </tr>
-                            ';
+                                    <td scope="row">' . $order_status . '</td>';
+                                ?>
+
+                                    <?php 
+                                    
+                                    if($order_status == 'Complete' ){
+                                      echo '  <td scope="row">paid</a></td> ';
+                                    }else{
+
+                                       echo  ' <td  scope="row"><a href="confirm_payment.php?order_id='.$order_num.'">confirm</a></td>';
+                                    }
+                                    echo '</tr>';
                         $num++;
                     }
                 }

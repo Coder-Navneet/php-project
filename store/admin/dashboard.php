@@ -112,6 +112,20 @@ if (!$_SESSION['username']) {
             }
             ?>
     </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['category_delete'])) {
+            include 'category_delete.php';
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['category_update'])) {
+            include 'category_update.php';
+            }
+            ?>
+    </div>
     <footer class="container-fulid bg-white pt-3  bottom-0 mt-5">
         <div class="container mt-5 border-bottom border-dark">
 

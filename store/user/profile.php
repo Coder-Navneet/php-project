@@ -90,7 +90,7 @@ include '../function/common_function.php';
                         <li class=" mb-2 list list-item nav-item "><a href="profile.php" class="nav-link text-light text-decoration-none">Pending order</a></li>
                         <li class=" mb-2 list list-item nav-item "><a href="profile.php?edit_account" class=" nav-link text-light text-decoration-none">Edit Account</a></li>
                         <li class=" mb-2 list list-item nav-item "><a href="profile.php?my_orders" class="nav-link text-light text-decoration-none">My order</a></li>
-                        <li class=" mb-2 list list-item nav-item "><a href="" class=" nav-link text-light text-decoration-none">Delete Account</a></li>
+                        <li class=" mb-2 list list-item nav-item "><a href="profile.php?delete_account" ` class=" nav-link text-light text-decoration-none">Delete Account</a></li>
                         <li class=" mb-2 list list-item nav-item "><a href="user_logout.php" class="nav-link text-light text-decoration-none">Logout</a></li>
                     </ul>
                 </div>
@@ -99,9 +99,10 @@ include '../function/common_function.php';
                 <?php
                 if (isset($_GET['edit_account'])) {
                     include 'edit_account.php';
-                }
-                else if(isset($_GET['my_orders'])) {
+                } else if (isset($_GET['my_orders'])) {
                     include 'my_orders.php';
+                } else if (isset($_GET['delete_account'])) {
+                    include 'delete_account.php';
                 } else {
                     get_user_order_details();
                 }
