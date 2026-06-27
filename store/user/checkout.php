@@ -82,7 +82,7 @@ require_once  '../function/common_function.php';
             <div class="row">
                 <?php
                 if (!isset($_SESSION['username'])) {
-                    include 'user/user_login.php';
+                    include 'user_login.php';
                 } else {
                     include 'payment.php';
                 }

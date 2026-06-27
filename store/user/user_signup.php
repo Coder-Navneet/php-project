@@ -37,7 +37,7 @@ if (isset($_POST['signup'])) {
             if ($result) {
                 if ($num_cart > 0) {
                     echo "<script>alert(' sign up successfully ');</script>";
-                    echo "<script>window.open('../checkout.php','_self');</script>";
+                    echo "<script>window.open('checkout.php','_self');</script>";
                 } else {
                     echo "<script>alert(' sign up successfully ');</script>";
                     echo "<script>window.open('user_login.php','_self');</script>";

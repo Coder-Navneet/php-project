@@ -2,7 +2,7 @@
 
 
 if (isset($_POST['login'])) {
-    include '../function/common_function.php';
+    require_once '../function/common_function.php';
     include '../common/conn.php';
     $username = $_POST['username'];
     $password = $_POST['password'];

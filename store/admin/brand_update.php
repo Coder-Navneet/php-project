@@ -1,22 +1,23 @@
  <?php
     include '../common/conn.php';
 
-    if (isset($_GET['category_update'])) {
-        $category_id = $_GET['category_update'];
-        $sql = "SELECT * FROM category where category_id = $category_id";
+    if (isset($_GET['brand_update'])) {
+        $brand_id = $_GET['brand_update'];
+        $sql = "SELECT * FROM brand where brand_id = $brand_id";
         $result = mysqli_query($conn, $sql);
         $rows = mysqli_fetch_assoc($result);
-        $category_name = $rows['category_name'];
+        $brand_name = $rows['brand_name'];
 
         if (isset($_POST['update'])) {
-            $category_name = $_POST['category_name'];
+            $brand_name = $_POST['brand_name'];
 
-            $delete_sql = "UPDATE category set category_name = '$category_name' where category_id = $category_id";
-            $result = mysqli_query($conn, $delete_sql);
-            if ($result) {
-                echo "<script>alert('category update successfully');</script>";
-                echo "<script>window.open('dashboard.php?view_category','_self');</script>";
-            }
+                $delete_sql = "UPDATE brand set brand_name = '$brand_name' where brand_id = $brand_id";
+                $result = mysqli_query($conn, $delete_sql);
+                if ($result) {
+                    echo "<script>alert('brand update successfully');</script>";
+                    echo "<script>window.open('dashboard.php?view_brand','_self');</script>";
+                }
+          
         }
     }
     ?>
@@ -37,11 +38,14 @@
 
          <form action="" method="post" class=" mt-5 ">
              <div class="d-flex justify-content-center ">
-                 <input type="text" name="category_name" value="<?php echo $category_name; ?> " class=" w-50 me-3 form-control">
+                 <input type="text" name="brand_name" value="<?php echo $brand_name; ?> " class=" w-50 me-3 form-control">
                  <input type="submit" class="btn btn-dark " name="update" value="update category">
              </div>
          </form>
      </div>
  </body>
 
+ 
  </html>
+
+ 

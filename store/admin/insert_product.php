@@ -47,9 +47,10 @@ if (isset($_POST['insert_product'])) {
         // print_r($product_image2);
         // print_r($product_image3);
 
-        $result_product = mysqli_query($conn,$product);
+        $result_product = mysqli_query($conn, $product);
         if ($result_product) {
             echo "<script>alert('data insert successfully.') </script>";
+            echo "<script>window.open('dashboard.php?view_product ','_self');</script>";
         } else {
             echo "Invalid credantiol";
         }

@@ -27,19 +27,21 @@ include '../common/conn.php';
                     <tr>
                         <th scope="col">S. no.</th>
                         <th scope="col">Category Name</th>
-                        <th scope="col" colspan="2">Opration</th>
+                        <th scope="col" >update</th>
+                        <th scope="col" >Delete</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     while ($rows = mysqli_fetch_assoc($result)) {
+                        $category_id =  $rows['category_id'];
                         echo '
                               <tr >
                                 <th scope="row">' . $i . '</th>
                                 <td>' . $rows['category_name'] . '</td>
                                 <td><a href="dashboard.php?category_update=' . $rows['category_id'] . '"  class="btn btn-primary" >update</a> </td>
-                                <td><a href="dashboard.php?category_delete=' . $rows['category_id'] . '"  class="btn btn-danger" >delete</a> </td>
+                                <td><a data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="btn btn-danger" >delete</a> </td>
                               </tr>
                             ';
                         $i++;
@@ -48,6 +50,30 @@ include '../common/conn.php';
                     ?>
                 </tbody>
             </table>
+            <!-- Button trigger modal -->
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+  Launch static backdrop modal
+</button> -->
+
+            <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="staticBackdropLabel"></h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4> you sure you want to delete this ? </h4>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><a href="dashboard.php" class="text-light text-decoration-none">No</a></button>
+                            <button type="button" class="btn btn-primary "><a href="dashboard.php?category_delete=<?php echo $category_id; ?>" class="text-light text-decoration-none">yes</a></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     <?php
     } else {

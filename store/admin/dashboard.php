@@ -64,9 +64,9 @@ if (!$_SESSION['username']) {
                 <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="dashboard.php?view_category">view catagory</a></button>
                 <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="dashboard.php?insert_brand">insert brand</a></button>
                 <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="dashboard.php?view_brand">view brand</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">All order</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">Add Payments</a></button>
-                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="">list users</a></button>
+                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="dashboard.php?all_orders">All orders</a></button>
+                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="dashboard.php?all_payment">Add Payments</a></button>
+                <button class="btn btn-primary text-center my-3 me-3"> <a class="nav-link text-light" href="dashboard.php?all_user">list users</a></button>
 
             </div>
         </div>
@@ -123,6 +123,68 @@ if (!$_SESSION['username']) {
         <?php
         if (isset($_GET['category_update'])) {
             include 'category_update.php';
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['brand_update'])) {
+            include 'brand_update.php';}
+            ?>
+    </div>
+     <div class="container ">
+        <?php
+        if (isset($_GET['brand_delete'])) {
+            include 'brand_delete.php';
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['edit_product'])) {
+            include 'edit_product.php';
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['delete_product'])) {
+            include 'delete_product.php';
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['all_orders'])) {
+            include 'all_orders.php' ;
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['delete_order'])) {
+            include 'delete_order.php' ;
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['all_payment'])) {
+            include 'all_payment.php' ;
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['delete_payment'])) {
+            include 'delete_payment.php' ;
+            }
+            ?>
+    </div>
+    <div class="container ">
+        <?php
+        if (isset($_GET['all_user'])) {
+            include 'all_user.php' ;
             }
             ?>
     </div>

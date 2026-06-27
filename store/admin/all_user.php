@@ -7,52 +7,56 @@ include '../common/conn.php';
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title> all orders</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body>
     <div class="container mt-5">
-        <h1 class="text-center ">product</h1>
+        <h1 class="text-center ">Users</h1>
         <table class="table text-center mt-5 ">
             <thead class="table-info">
                 <tr>
-                    <th scope="col">S. no.</th>
-                    <th scope="col">product title</th>
-                    <th scope="col">product image </th>
-                    <th scope="col">product price</th>
-                    <th scope="col">total sold</th>
-                    <th scope="col" >update</th>
-                    <th scope="col" >Delete</th>
+                    <th scope="col">S. no</th>
+                    <th scope="col">user name</th>
+                    <th scope="col">address</th>
+                    <th scope="col">mobile number</th>
+                    <th scope="col">email</th>
+                    <th scope="col">image</th>
+                    <th scope="col">Ip address</th>
+                    <th scope="col">Delete</th>
 
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $sql = "SELECT * FROM product";
+                $sql = "SELECT * FROM user_table";
                 $result = mysqli_query($conn, $sql);
                 if ($result) {
-
+                    $i = 1;
                     while ($rows = mysqli_fetch_assoc($result)) {
-                        $product_id = $rows['product_id'];
-                        $get_count = "SELECT * FROM order_pending where product_id = $product_id";
-                        $result_count = mysqli_query($conn, $get_count);
-                        $rows_count = mysqli_fetch_assoc($result_count);
-                        $product_sold = $rows_count['quantity'];
+                        // $get_count = "SELECT * FROM order_pending where product_id = $product_id";
+                        // $result_count = mysqli_query($conn, $get_count);
+                        // $rows_count = mysqli_fetch_assoc($result_count);
+                        // $product_sold = $rows_count['quantity'];
+                        $user_id = $rows['user_id'];
+
 
 
 
                         echo '
                               <tr>
-                                <th scope="row">' . $rows['category_id'] . '</th>
-                                <td>' . $rows['product_title'] . '</td>
-                                <td> <img src="./product_images/' . $rows['product_image1'] . '" style="width:50px;" > </td>
-                                <td>' . $rows['product_price'] . '/-</td>
-                                <td>' . $product_sold . '</td>
-                                <td><button class="btn btn-primary" ><a href="dashboard.php?edit_product=' . $product_id . '" class="text-light text-decoration-none">edit</a></button></td>
+                                <th scope="row">' . $i . '</th>
+                                <td> ' . $rows['username'] . ' </td>
+                                <td>' . $rows['user_address'] . '</td>
+                                <td>' . $rows['user_mobile'] . '</td>
+                                <td>' . $rows['user_email'] . '</td>
+                                <td> <img src="../user\user_images/' . $rows['user_image'] . '" style="width:50px;" > </td>
+                                <td>' . $rows['user_ip'] . '</td>
                                 <td><a data-bs-toggle="modal" data-bs-target="#staticBackdrop"  class="btn btn-danger" >delete</a> </td>                            
                                   </tr>
                             ';
+                        $i++;
                     }
                 }
                 ?>
@@ -76,7 +80,7 @@ include '../common/conn.php';
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><a href="dashboard.php" class="text-light text-decoration-none">No</a></button>
-                        <button type="button" class="btn btn-primary "><a href="dashboard.php?delete_product=<?php echo $product_id; ?>" class="text-light text-decoration-none">yes</a></button>
+                        <button type="button" class="btn btn-primary "><a href="dashboard.php?delete_payment=<?php echo $user_id; ?>" class="text-light text-decoration-none">yes</a></button>
                     </div>
                 </div>
             </div>
